@@ -1,9 +1,9 @@
 targetScope = 'resourceGroup'
 
 param location string
+param storageAccountName string
 param skuName string
 param kind string
-param storageAccountName string
 param owner string
 param environment string
 param costCenter string

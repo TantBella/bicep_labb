@@ -2,21 +2,45 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "env": { "value": "dev" },
-    "location": { "value": "swedencentral" },
+    "env": {
+      "value": "dev"
+    },
+    "location": {
+      "value": "swedencentral"
+    },
 
-    "storageAccountName": { "value": "adminmolnlabbstoragebellasofadev" },
+    "storageAccountName": {
+      "value": "adminmolnst"
+    },
 
-    "appServiceName": { "value": "AdminMolnLabb-bellasofa-dev" },
+    "appServiceName": {
+      "value": "AdminMoln-bellasofa"
+    },
 
-    "appServicePlanName": { "value": "AdminMolnLabb-asp-bellasofadev" },
+    "appServicePlanName": {
+      "value": "AdminMoln-asp-bellasofa"
+    },
 
-    "skuName": { "value": "Standard_LRS" },
-    "appSkuName": { "value": "B1" },
-    "httpsOnly": { "value": true },
-    "skuCapacity": { "value": 1 },
-    "storageKind": { "value": "StorageV2" },
-    "owner": { "value": "bellasolomonfalkfrii" },
-    "costCenter": { "value": "adminmolnlabb" }
+    "skuName": {
+      "value": "Standard_LRS"
+    },
+    "appSkuName": {
+      "value": "B1"
+    },
+    "httpsOnly": {
+      "value": true
+    },
+    "skuCapacity": {
+      "value": 1
+    },
+    "storageKind": {
+      "value": "StorageV2"
+    },
+    "owner": {
+      "value": "bellasolomonfalkfrii"
+    },
+    "costCenter": {
+      "value": "adminmoln"
+    }
   }
 }
