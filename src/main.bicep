@@ -13,6 +13,11 @@ param httpsOnly bool
 param owner string
 param costCenter string
 
+var appServicePlanResourceName = '${appServicePlanName}-${env}-${uniqueString(resourceGroup().id)}'
+param autoscaleMinInstance int
+param autoscaleMaxInstance int
+param autoscaleDefaultInstance int
+
 //  Storage
 module StorageAccount './modules/storage.bicep' = {
   name: 'storage-${env}'
@@ -20,7 +25,7 @@ module StorageAccount './modules/storage.bicep' = {
     location: location
     skuName: skuName
     kind: storageKind
-    storageAccountName: '${storageAccountName}${uniqueString(resourceGroup().id)}'
+    storageAccountName: '${storageAccountName}${env}${uniqueString(resourceGroup().id)}'
     owner: owner
     environment: env
     costCenter: costCenter
@@ -32,7 +37,7 @@ module AppService './modules/appservice.bicep' = {
   name: 'app-${env}'
   params: {
     appServiceName: '${appServiceName}-${env}'
-    appServicePlanName: '${appServicePlanName}-${env}-${uniqueString(resourceGroup().id)}'
+    appServicePlanName: appServicePlanResourceName
     httpsOnly: httpsOnly
     location: location
     skuCapacity: skuCapacity
@@ -40,5 +45,20 @@ module AppService './modules/appservice.bicep' = {
     owner: owner
     environment: env
     costCenter: costCenter
+  }
+}
+
+//  Autoscale (only for prod)
+module Autoscale './modules/autoscale.bicep' = {
+  name: 'autoscale-${env}'
+  params: {
+    env: env
+    location: location
+    appServicePlanName: appServicePlanResourceName
+    autoscaleMinInstance: autoscaleMinInstance
+    autoscaleMaxInstance: autoscaleMaxInstance
+    autoscaleDefaultInstance: autoscaleDefaultInstance
+    // owner: owner
+    // costCenter: costCenter
   }
 }

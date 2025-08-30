@@ -1,0 +1,47 @@
+
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "env": {
+      "value": "test"
+    },
+    "location": {
+      "value": "swedencentral"
+    },
+
+    "storageAccountName": {
+      "value": "stbella"
+    },
+
+    "appServiceName": {
+      "value": "BicepLabb-bellasofa"
+    },
+
+    "appServicePlanName": {
+      "value": "BicepLabb-asp-bellasofa"
+    },
+
+    "skuName": {
+      "value": "Standard_LRS"
+    },
+    "appSkuName": {
+      "value": "B1"
+    },
+    "httpsOnly": {
+      "value": true
+    },
+    "skuCapacity": {
+      "value": 1
+    },
+    "storageKind": {
+      "value": "StorageV2"
+    },
+    "owner": {
+      "value": "bellasolomonfalkfrii"
+    },
+    "costCenter": {
+      "value": "biceplabb"
+    }
+  }
+}

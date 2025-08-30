@@ -10,15 +10,15 @@
     },
 
     "storageAccountName": {
-      "value": "adminmolnst"
+      "value": "stbellasofa"
     },
 
     "appServiceName": {
-      "value": "AdminMoln-bellasofa"
+      "value": "BicepLabb-bellasofa"
     },
 
     "appServicePlanName": {
-      "value": "AdminMoln-asp-bellasofa"
+      "value": "BicepLabb-asp-bellasofa"
     },
 
     "skuName": {
@@ -40,7 +40,7 @@
       "value": "bellasolomonfalkfrii"
     },
     "costCenter": {
-      "value": "adminmoln"
+      "value": "biceplabb"
     }
   }
 }
