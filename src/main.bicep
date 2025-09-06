@@ -77,10 +77,10 @@ module KeyVaultAccess './modules/keyvault-access.bicep' = {
     principalId: AppService.outputs.appServicePrincipalId
     secretName: secretName
   }
-  // dependsOn: [
-  //   KeyVault
-  //   AppService
-  // ]
+  dependsOn: [
+    KeyVault
+    AppService
+  ]
 }
 
 //  Autoscale ( prod)

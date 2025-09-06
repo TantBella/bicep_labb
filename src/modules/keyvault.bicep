@@ -7,7 +7,7 @@ param secretValue string
 param principalId string
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
-  name: '${keyVaultName}${env}${uniqueString(resourceGroup().id)}'
+  name: keyVaultName
   location: location
   properties: {
     tenantId: subscription().tenantId
