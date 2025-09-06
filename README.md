@@ -36,36 +36,36 @@ az login --use-device-code
 #### Dev
 
 ```bash
-  az deployment group create ` \
-  --name prod-deployment ` \
-  --resource-group rg-<dittnamn>-dev ` \
-  --template-file "./src/main.bicep" ` \
-  --parameters "./parameters/dev.json" ` \
-  --output json ` \
+  az deployment group create ` 
+  --name prod-deployment ` 
+  --resource-group rg-<dittnamn>-dev ` 
+  --template-file "./src/main.bicep" ` 
+  --parameters "./parameters/dev.json" ` 
+  --output json ` 
   --debug
 ```
 
 #### Test
 
 ```bash
-  az deployment group create ` \
-  --name prod-deployment ` \
-  --resource-group rg-<dittnamn>-dev ` \
-  --template-file "./src/main.bicep" ` \
-  --parameters "./parameters/test.json" ` \
-  --output json ` \
+  az deployment group create ` 
+  --name prod-deployment ` 
+  --resource-group rg-<dittnamn>-dev ` 
+  --template-file "./src/main.bicep" ` 
+  --parameters "./parameters/test.json" ` 
+  --output json ` 
   --debug
 ```
 
 #### Prod
 
 ```bash
-  az deployment group create ` \
-  --name prod-deployment ` \
-  --resource-group rg-<dittnamn>-dev ` \
-  --template-file "./src/main.bicep" ` \
-  --parameters "./parameters/prod.json" ` \
-  --output json ` \
+  az deployment group create ` 
+  --name prod-deployment ` 
+  --resource-group rg-<dittnamn>-dev ` 
+  --template-file "./src/main.bicep" ` 
+  --parameters "./parameters/prod.json" ` 
+  --output json ` 
   --debug
 ```
 
@@ -80,18 +80,18 @@ Efter deployment får du URL\:erna till Web Apps:
 Exempel på kommando för att se outputs:
 
 ```bash
-az deployment group show \
-  --resource-group rg-<dittnamn>-dev \
-  --name dev-deployment \
+az deployment group show 
+  --resource-group rg-<dittnamn>-dev 
+  --name dev-deployment 
   --query properties.outputs
 ```
 
 Eller:
 
 ```bash
-  az deployment group show ` \
-  --name prod-deployment ` \
-  --resource-group rg-<dittnamn>-dev ` \
-  --query "properties.outputs.webAppUrl.value" ` \
+  az deployment group show ` 
+  --name prod-deployment ` 
+  --resource-group rg-<dittnamn>-dev ` 
+  --query "properties.outputs.webAppUrl.value" ` 
   -o tsv
 ```
