@@ -41,6 +41,9 @@
     },
     "costCenter": {
       "value": "biceplabb"
-    }
+    },
+       "keyVaultName": { "value": "kv-bella" },
+    "secretName": { "value": "MySecret" },
+    "secretValue": { "value": "" }
   }
 }

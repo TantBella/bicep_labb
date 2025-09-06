@@ -14,11 +14,11 @@
     },
 
     "appServiceName": {
-      "value": "BicepLabb-bellasofa"
+      "value": "BicepLabb-bella"
     },
 
     "appServicePlanName": {
-      "value": "BicepLabb-asp-bellasofa"
+      "value": "BicepLabb-asp-bella"
     },
 
     "skuName": {
@@ -44,6 +44,9 @@
     },
     "autoscaleMinInstance": { "value": 1 },
     "autoscaleMaxInstance": { "value": 3 },
-    "autoscaleDefaultInstance": { "value": 1 }
+    "autoscaleDefaultInstance": { "value": 1 },
+    "keyVaultName": { "value": "kv" },
+    "secretName": { "value": "MySecret" },
+    "secretValue": { "value": "" }
   }
 }

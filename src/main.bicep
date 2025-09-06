@@ -13,10 +13,15 @@ param httpsOnly bool
 param owner string
 param costCenter string
 
-var appServicePlanResourceName = '${appServicePlanName}-${env}-${uniqueString(resourceGroup().id)}'
+param keyVaultName string
+param secretName string
+param secretValue string
+
 param autoscaleMinInstance int
 param autoscaleMaxInstance int
 param autoscaleDefaultInstance int
+
+var appServicePlanResourceName = '${appServicePlanName}-${env}-${uniqueString(resourceGroup().id)}'
 
 //  Storage
 module StorageAccount './modules/storage.bicep' = {
@@ -29,6 +34,19 @@ module StorageAccount './modules/storage.bicep' = {
     owner: owner
     environment: env
     costCenter: costCenter
+  }
+}
+
+// Keyvault
+module KeyVault './modules/keyvault.bicep' = {
+  name: 'keyvault-${env}'
+  params: {
+    env: env
+    location: location
+    keyVaultName: keyVaultName
+    secretName: secretName
+    secretValue: secretValue
+    principalId: ''
   }
 }
 
@@ -45,20 +63,31 @@ module AppService './modules/appservice.bicep' = {
     owner: owner
     environment: env
     costCenter: costCenter
+    keyVaultUri: KeyVault.outputs.keyVaultUri
+    secretName: secretName
   }
 }
 
 //  Autoscale (only for prod)
-module Autoscale './modules/autoscale.bicep' = {
+module Autoscale './modules/autoscale.bicep' = if (env == 'prod') {
   name: 'autoscale-${env}'
   params: {
     env: env
     location: location
-    appServicePlanName: appServicePlanResourceName
+    appServicePlanName: AppService.outputs.appServicePlanNameOut
     autoscaleMinInstance: autoscaleMinInstance
     autoscaleMaxInstance: autoscaleMaxInstance
     autoscaleDefaultInstance: autoscaleDefaultInstance
-    // owner: owner
-    // costCenter: costCenter
   }
+  dependsOn: [
+    AppService
+  ]
 }
+
+// az deployment group create `
+//   --name prod-deployment `
+//   --resource-group rg-bellasolomonfalkfrii `
+//   --template-file "./src/main.bicep" `
+//   --parameters "./parameters/prod.json" `
+//   --output json `
+//   --debug

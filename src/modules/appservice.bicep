@@ -10,6 +10,9 @@ param owner string
 param environment string
 param costCenter string
 
+param keyVaultUri string
+param secretName string
+
 resource appServicePlan 'Microsoft.Web/serverfarms@2024-11-01' = {
   name: appServicePlanName
   location: location
@@ -22,8 +25,11 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2024-11-01' = {
 resource appService 'Microsoft.Web/sites@2024-11-01' = {
   name: appServiceName
   location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
-    serverFarmId: appServicePlan.id
+    serverFarmId: resourceId('Microsoft.Web/serverfarms', appServicePlanName)
     httpsOnly: httpsOnly
   }
   tags: {
@@ -33,4 +39,18 @@ resource appService 'Microsoft.Web/sites@2024-11-01' = {
   }
 }
 
+resource appSetting 'Microsoft.Web/sites/config@2022-03-01' = {
+  name: '${appService.name}/appsettings'
+  properties: {
+    MySecret: '@Microsoft.KeyVault(SecretUri=${keyVaultUri}/secrets/${secretName})'
+  }
+  dependsOn: [
+    appService
+  ]
+}
+
+output appServicePlanNameOut string = appServicePlan.name
+
 output appServiceURL string = 'https://${appService.properties.defaultHostName}'
+
+output appServicePrincipalId string = appService.identity.principalId
