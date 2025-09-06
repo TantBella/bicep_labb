@@ -23,10 +23,11 @@ param autoscaleMaxInstance int
 param autoscaleDefaultInstance int
 
 var appServicePlanResourceName = '${appServicePlanName}-${env}-${uniqueString(resourceGroup().id)}'
+var keyVaultUniqueName = 'kv${env}${take(uniqueString(resourceGroup().id),6)}'
 
 //  Storage
 module StorageAccount './modules/storage.bicep' = {
-  name: 'storage-${env}'
+  name: 'storage${env}${uniqueString(resourceGroup().id)}'
   params: {
     location: location
     skuName: skuName
@@ -39,11 +40,11 @@ module StorageAccount './modules/storage.bicep' = {
 }
 
 module KeyVault './modules/keyvault.bicep' = {
-  name: 'keyvault-${env}'
+  name: 'kv'
   params: {
     env: env
     location: location
-    keyVaultName: keyVaultName
+    keyVaultName: keyVaultUniqueName
     secretName: secretName
     secretValue: secretValue
     principalId: ''
@@ -52,9 +53,9 @@ module KeyVault './modules/keyvault.bicep' = {
 
 //  Appservice
 module AppService './modules/appservice.bicep' = {
-  name: 'app-${env}'
+  name: 'app${env}${uniqueString(resourceGroup().id)}'
   params: {
-    appServiceName: '${appServiceName}-${env}'
+    appServiceName: '${appServiceName}${env}'
     appServicePlanName: appServicePlanResourceName
     httpsOnly: httpsOnly
     location: location
@@ -70,7 +71,7 @@ module AppService './modules/appservice.bicep' = {
 
 // KeyVault access policy
 module KeyVaultAccess './modules/keyvault-access.bicep' = {
-  name: 'keyvault-access-${env}'
+  name: 'kv-access${env}${uniqueString(resourceGroup().id)}'
   params: {
     keyVaultName: KeyVault.outputs.keyVaultNameOutput
     principalId: AppService.outputs.appServicePrincipalId
@@ -84,7 +85,7 @@ module KeyVaultAccess './modules/keyvault-access.bicep' = {
 
 //  Autoscale ( prod)
 module Autoscale './modules/autoscale.bicep' = if (env == 'prod') {
-  name: 'autoscale-${env}'
+  name: 'autoscale${env}${uniqueString(resourceGroup().id)}'
   params: {
     env: env
     location: location
@@ -95,9 +96,9 @@ module Autoscale './modules/autoscale.bicep' = if (env == 'prod') {
     owner: owner
     costCenter: costCenter
   }
-  // dependsOn: [
-  //   AppService
-  // ]
+  dependsOn: [
+    AppService
+  ]
 }
 
 output webAppUrl string = AppService.outputs.appServiceURL

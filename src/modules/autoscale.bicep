@@ -7,8 +7,8 @@ param autoscaleDefaultInstance int
 param owner string
 param costCenter string
 
-resource autoscale 'Microsoft.Insights/autoscaleSettings@2021-05-01-preview' = if (env == 'prod') {
-  name: 'asp-${env}-autoscale'
+resource autoscale 'Microsoft.Insights/autoscaleSettings@2021-05-01-preview' = {
+  name: 'asp-prod-autoscale'
   location: location
   properties: {
     enabled: true
