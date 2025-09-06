@@ -15,6 +15,7 @@ param costCenter string
 
 param keyVaultName string
 param secretName string
+@secure()
 param secretValue string
 
 param autoscaleMinInstance int
@@ -37,7 +38,6 @@ module StorageAccount './modules/storage.bicep' = {
   }
 }
 
-// Keyvault
 module KeyVault './modules/keyvault.bicep' = {
   name: 'keyvault-${env}'
   params: {
@@ -50,7 +50,7 @@ module KeyVault './modules/keyvault.bicep' = {
   }
 }
 
-//  App Service
+//  Appservice
 module AppService './modules/appservice.bicep' = {
   name: 'app-${env}'
   params: {
@@ -68,7 +68,21 @@ module AppService './modules/appservice.bicep' = {
   }
 }
 
-//  Autoscale (only for prod)
+// KeyVault access policy
+module KeyVaultAccess './modules/keyvault-access.bicep' = {
+  name: 'keyvault-access-${env}'
+  params: {
+    keyVaultName: KeyVault.outputs.keyVaultNameOutput
+    principalId: AppService.outputs.appServicePrincipalId
+    secretName: secretName
+  }
+  // dependsOn: [
+  //   KeyVault
+  //   AppService
+  // ]
+}
+
+//  Autoscale ( prod)
 module Autoscale './modules/autoscale.bicep' = if (env == 'prod') {
   name: 'autoscale-${env}'
   params: {
@@ -78,16 +92,12 @@ module Autoscale './modules/autoscale.bicep' = if (env == 'prod') {
     autoscaleMinInstance: autoscaleMinInstance
     autoscaleMaxInstance: autoscaleMaxInstance
     autoscaleDefaultInstance: autoscaleDefaultInstance
+    owner: owner
+    costCenter: costCenter
   }
-  dependsOn: [
-    AppService
-  ]
+  // dependsOn: [
+  //   AppService
+  // ]
 }
 
-// az deployment group create `
-//   --name prod-deployment `
-//   --resource-group rg-bellasolomonfalkfrii `
-//   --template-file "./src/main.bicep" `
-//   --parameters "./parameters/prod.json" `
-//   --output json `
-//   --debug
+output webAppUrl string = AppService.outputs.appServiceURL

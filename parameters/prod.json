@@ -10,15 +10,15 @@
     },
 
     "storageAccountName": {
-      "value": "stbella"
+      "value": "bella"
     },
 
     "appServiceName": {
-      "value": "BicepLabb-bella"
+      "value": "Bicep-bella"
     },
 
     "appServicePlanName": {
-      "value": "BicepLabb-asp-bella"
+      "value": "Bicep-asp-bella"
     },
 
     "skuName": {
@@ -43,10 +43,15 @@
       "value": "biceplabb"
     },
     "autoscaleMinInstance": { "value": 1 },
+
     "autoscaleMaxInstance": { "value": 3 },
+
     "autoscaleDefaultInstance": { "value": 1 },
-    "keyVaultName": { "value": "kv" },
+
+    "keyVaultName": { "value": "kvbella" },
+
     "secretName": { "value": "MySecret" },
+
     "secretValue": { "value": "" }
   }
 }

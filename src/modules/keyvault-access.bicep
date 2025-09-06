@@ -14,6 +14,5 @@ resource kvAccess 'Microsoft.KeyVault/vaults/accessPolicies@2022-07-01' = {
         }
       }
     ]
-    enableSoftDelete: true
   }
 }
