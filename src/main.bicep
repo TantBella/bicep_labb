@@ -22,41 +22,37 @@ param autoscaleMinInstance int
 param autoscaleMaxInstance int
 param autoscaleDefaultInstance int
 
-var appServicePlanResourceName = '${appServicePlanName}-${env}-${uniqueString(resourceGroup().id)}'
-var keyVaultUniqueName = 'kv${env}${take(uniqueString(resourceGroup().id),6)}'
-
 //  Storage
 module StorageAccount './modules/storage.bicep' = {
-  name: 'storage${env}${uniqueString(resourceGroup().id)}'
+  name: 'storage${env}${take(uniqueString(resourceGroup().id),6)}'
   params: {
     location: location
     skuName: skuName
     kind: storageKind
-    storageAccountName: '${storageAccountName}${env}${uniqueString(resourceGroup().id)}'
+    storageAccountName: '${storageAccountName}${env}${take(uniqueString(resourceGroup().id), 6)}'
     owner: owner
     environment: env
     costCenter: costCenter
   }
 }
 
+// Keyvault
 module KeyVault './modules/keyvault.bicep' = {
-  name: 'kv'
+  name: 'kv-${env}${take(uniqueString(resourceGroup().id),6)}'
   params: {
-    env: env
     location: location
-    keyVaultName: keyVaultUniqueName
+    keyVaultName: 'kv${keyVaultName}-${env}${take(uniqueString(resourceGroup().id), 6)}'
     secretName: secretName
     secretValue: secretValue
-    principalId: ''
   }
 }
 
 //  Appservice
 module AppService './modules/appservice.bicep' = {
-  name: 'app${env}${uniqueString(resourceGroup().id)}'
+  name: 'app${appServiceName}-${env}${take(uniqueString(resourceGroup().id),6)}'
   params: {
-    appServiceName: '${appServiceName}${env}'
-    appServicePlanName: appServicePlanResourceName
+    appServiceName: 'app${appServiceName}-${env}${take(uniqueString(resourceGroup().id), 6)}'
+    appServicePlanName: '${appServicePlanName}-${env}${take(uniqueString(resourceGroup().id), 6)}'
     httpsOnly: httpsOnly
     location: location
     skuCapacity: skuCapacity
@@ -71,21 +67,21 @@ module AppService './modules/appservice.bicep' = {
 
 // KeyVault access policy
 module KeyVaultAccess './modules/keyvault-access.bicep' = {
-  name: 'kv-access${env}${uniqueString(resourceGroup().id)}'
+  name: 'kvAccess-${env}${take(uniqueString(resourceGroup().id), 6)}'
   params: {
     keyVaultName: KeyVault.outputs.keyVaultNameOutput
     principalId: AppService.outputs.appServicePrincipalId
-    secretName: secretName
   }
-  dependsOn: [
-    KeyVault
-    AppService
-  ]
+  // dependsOn: [
+  //   KeyVault
+  //   AppService
+  // ]
 }
 
 //  Autoscale ( prod)
 module Autoscale './modules/autoscale.bicep' = if (env == 'prod') {
-  name: 'autoscale${env}${uniqueString(resourceGroup().id)}'
+  name: 'autoscale-${take(uniqueString(resourceGroup().id), 6)}'
+
   params: {
     env: env
     location: location
@@ -96,9 +92,6 @@ module Autoscale './modules/autoscale.bicep' = if (env == 'prod') {
     owner: owner
     costCenter: costCenter
   }
-  dependsOn: [
-    AppService
-  ]
 }
 
 output webAppUrl string = AppService.outputs.appServiceURL

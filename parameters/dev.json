@@ -14,11 +14,11 @@
     },
 
     "appServiceName": {
-      "value": "Bicep-bellasofa"
+      "value": "bella"
     },
 
     "appServicePlanName": {
-      "value": "Bicep-asp-bellasofa"
+      "value": "asp-bella"
     },
 
     "skuName": {
@@ -42,7 +42,7 @@
     "costCenter": {
       "value": "biceplabb"
     },
-    "keyVaultName": { "value": "kvbella" },
+    "keyVaultName": { "value": "bella" },
 
     "secretName": { "value": "MySecret" },
 

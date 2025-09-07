@@ -8,7 +8,7 @@ param owner string
 param costCenter string
 
 resource autoscale 'Microsoft.Insights/autoscaleSettings@2021-05-01-preview' = {
-  name: 'asp-prod-autoscale'
+  name: 'prod-autoscale'
   location: location
   properties: {
     enabled: true
@@ -61,10 +61,10 @@ resource autoscale 'Microsoft.Insights/autoscaleSettings@2021-05-01-preview' = {
         ]
       }
     ]
-    tags: {
-      owner: owner
-      environment: env
-      costCenter: costCenter
-    }
+  }
+  tags: {
+    owner: owner
+    environment: env
+    costCenter: costCenter
   }
 }

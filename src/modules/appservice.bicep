@@ -40,7 +40,8 @@ resource appService 'Microsoft.Web/sites@2024-11-01' = {
 }
 
 resource appSetting 'Microsoft.Web/sites/config@2022-03-01' = {
-  name: '${appService.name}/appsettings'
+  parent: appService
+  name: 'appsettings'
   properties: {
     MySecret: '@Microsoft.KeyVault(SecretUri=${keyVaultUri}/secrets/${secretName})'
   }

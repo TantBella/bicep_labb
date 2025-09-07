@@ -1,10 +1,9 @@
 // modules/keyvault.bicep
-param env string
 param location string
 param keyVaultName string
 param secretName string
+@secure()
 param secretValue string
-param principalId string
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   name: keyVaultName
